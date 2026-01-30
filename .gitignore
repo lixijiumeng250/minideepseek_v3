@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Model checkpoints and outputs
+out/
+*.pth
+*.pt
+*.ckpt
+*.bin
+
+
+# Logs
+*.log
+logs/
+
+# Weights & Biases
+wandb/
+
+# OS
+.DS_Store
+Thumbs.db
+
+
+# Temporary files
+*.tmp
+*.temp
