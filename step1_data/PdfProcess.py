@@ -5,47 +5,36 @@ from multiprocessing import Pool
 from tqdm import tqdm
 from typing import Dict
 
-# 统一的 JSONL 输出文件夹
+#output_dir
 JSONL_OUTPUT_DIR = "/mnt/data/workspace/sy_transformers/deepseekv3/v3/data/PDF_result"
 os.makedirs(JSONL_OUTPUT_DIR, exist_ok=True)
 
 
 def extract_text_from_pdf(pdf_path: str) -> Dict[str, str]:
-    """
-    使用 unstructured 库提取 PDF 文件的文本内容
-    
-    Args:
-        pdf_path: PDF 文件路径
-        
-    Returns:
-        包含文本内容的字典，格式为 {"text": textcontent}
-    """
+    """ extract text from pdf return {"text": textcontent} """
     try:
-        print(f"正在解析PDF文件: {pdf_path}")
+        print(f"extract text from pdf: {pdf_path}")
         
         elements = partition_pdf(
             filename=pdf_path,
-            strategy="hi_res",  # 高精度提取
-            extract_images_in_pdf=True,  # 提取pdf中的图片
-            extract_image_block_types=["Table", "Image"],  # 提取表格和图片
-            languages=["eng", "chi_sim"],  # 支持英文和简体中文
-            infer_table_structure=True,  # 推断表格结构
-            include_page_breaks=True  # 包含页码信息
+            strategy="hi_res",                              # 高精度提取
+            extract_images_in_pdf=True,                     # 提取pdf中的图片
+            extract_image_block_types=["Table", "Image"],   # 提取表格和图片
+            languages=["eng", "chi_sim"],                   # 支持英文和简体中文
+            infer_table_structure=True,                     # 推断表格结构
+            include_page_breaks=True                        # 包含页码信息
         )
         
-        # 提取所有文本内容
         text_parts = []
         for element in elements:
             if hasattr(element, 'text') and element.text:
                 text_parts.append(element.text)
         
-        # 合并所有文本
         text_content = "\n\n".join(text_parts)
         
         return {"text": text_content}
 
     except Exception as e:
-        print(f"处理文件 {pdf_path} 时出错: {e}")
         return {"text": "", "error": str(e)}
 
 
